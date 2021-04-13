@@ -7,7 +7,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import PokedexScreen from '../screens/PokedexScreen';
+import { BottomTabParamList, PokedexParamList, TabOneParamList, TabTwoParamList } from '../types/types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -16,8 +17,15 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="PokedexTab"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      <BottomTab.Screen
+        name="PokedexTab"
+        component={PokedexNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-rocket" color={color} />,
+        }}
+      />
       <BottomTab.Screen
         name="TabOne"
         component={TabOneNavigator}
@@ -44,6 +52,20 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
+const PokedexStack = createStackNavigator<PokedexParamList>();
+
+function PokedexNavigator() {
+  return (
+    <PokedexStack.Navigator>
+      <PokedexStack.Screen
+        name="PokedexScreen"
+        component={PokedexScreen}
+        options={{ headerTitle: 'Pokedex' }}
+      />
+    </PokedexStack.Navigator>
+  );
+}
+
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
