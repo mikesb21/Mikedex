@@ -1,65 +1,33 @@
 // React
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, ScrollView, StyleSheet } from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+
+// GraphQL
+import { useQuery } from '@apollo/client';
+import { GET_POKEDEX_QUERY } from '../apis/pokedex-api';
 
 // Components
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 import PokemonComponent from '../components/PokemonComponent';
 
-// Api
-import {
-  fetchPokedex,
-  fetchNextPage,
-  fetchPreviousPage,
-} from '../apis/pokedex-api';
-
 // Types
-import { Pokedex } from '../types/pokedex.types';
+import { PokemonPreview } from '../types/pokedex.types';
 
 const PokedexScreen = () => {
-  const [pokedex, setPokedex] = useState<Pokedex>();
-  const scrollRef = useRef<ScrollView>();
+  const { data, error } = useQuery(GET_POKEDEX_QUERY);
 
-  useEffect(() => {
-    fetchPokedex().then((pokemonList) => setPokedex(pokemonList));
-  }, []);
-
-  const onPress = () => {
-    scrollRef.current?.scrollTo({
-      y: 0,
-      animated: true,
-    });
-  };
-
-  const previousPokedexPage = () => {
-    fetchPreviousPage(pokedex?.previous).then((previousPokemonList) =>
-      setPokedex(previousPokemonList)
-    );
-    onPress();
-  };
-
-  const nextPokedexPage = () => {
-    fetchNextPage(pokedex?.next).then((newPokemonList) =>
-      setPokedex(newPokemonList)
-    );
-    onPress();
-  };
+  if (error) return <Text>Error! ${error.message}</Text>;
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+    >
       <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {pokedex?.results.map((pokemon) => {
+      {data?.pokemon_v2_pokemon.map((pokemon: PokemonPreview) => {
         return <PokemonComponent key={pokemon.name} pokemon={pokemon} />;
       })}
-      <View style={styles.container}>
-        {pokedex?.previous && (
-          <Button title="previous" onPress={previousPokedexPage}></Button>
-        )}
-
-        {pokedex?.next && (
-          <Button title="next" onPress={nextPokedexPage}></Button>
-        )}
-      </View>
     </ScrollView>
   );
 };
@@ -69,16 +37,11 @@ export default PokedexScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
+    backgroundColor: '#d90000',
+    borderRadius: 15,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 });

@@ -6,27 +6,22 @@ import { Dimensions, Image, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 
 // Types
-import { PokemonPreview } from '../types/pokedex.types';
+import { Type } from '../types/pokedex.types';
 
 // Utils
-import config from '../config';
 import { capitalizedName } from '../utils/pokemon';
+import TypesImage from '../assets/images/TypesImage';
 
-const PokemonComponent = ({ pokemon }: { pokemon: PokemonPreview }) => {
+const TypeComponent = ({ type }: { type: Type }) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: `${config.pokemonImageUrl + pokemon.id}.png`,
-        }}
-        style={styles.image}
-      />
-      <Text style={styles.name}>{capitalizedName(pokemon.name)}</Text>
+      <Image source={TypesImage[type.name]} style={styles.image} />
+      <Text style={styles.name}>{capitalizedName(type.name)}</Text>
     </View>
   );
 };
 
-export default PokemonComponent;
+export default TypeComponent;
 
 const styles = StyleSheet.create({
   container: {
@@ -38,14 +33,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: 'gray',
-    borderRadius: 15,
+    borderRadius: 25,
+    width: Dimensions.get('window').width * 0.25,
+    height: Dimensions.get('window').height * 0.12,
     backgroundColor: '#f2f2f2',
-    width: Dimensions.get('window').width * 0.976,
-    height: Dimensions.get('window').height * 0.26,
   },
   image: {
-    width: Dimensions.get('window').width * 0.5,
-    height: Dimensions.get('window').height * 0.24,
+    width: 64,
+    height: 64,
+    marginBottom: 10,
   },
   name: {
     color: 'black',

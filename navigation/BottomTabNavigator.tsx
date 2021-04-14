@@ -1,14 +1,17 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import PokedexScreen from '../screens/PokedexScreen';
-import { BottomTabParamList, PokedexParamList, TabOneParamList, TabTwoParamList } from '../types/types';
+import {
+  BottomTabParamList,
+  PokedexParamList,
+  TypesParamList,
+} from '../types/types';
+import TypesScreen from '../screens/TypesScreen';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -17,27 +20,25 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="PokedexTab"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      initialRouteName="Pokedex"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+    >
       <BottomTab.Screen
-        name="PokedexTab"
+        name="Pokedex"
         component={PokedexNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-rocket" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIconMCI name="pokeball" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="Types"
+        component={TypesNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIconMCI name="pokemon-go" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -46,8 +47,20 @@ export default function BottomTabNavigator() {
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
+function TabBarIconIOS(props: {
+  name: React.ComponentProps<typeof Ionicons>['name'];
+  color: string;
+}) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+}
+
+function TabBarIconMCI(props: {
+  name: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+  color: string;
+}) {
+  return (
+    <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} {...props} />
+  );
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -58,7 +71,7 @@ function PokedexNavigator() {
   return (
     <PokedexStack.Navigator>
       <PokedexStack.Screen
-        name="PokedexScreen"
+        name="Pokedex"
         component={PokedexScreen}
         options={{ headerTitle: 'Pokedex' }}
       />
@@ -66,30 +79,16 @@ function PokedexNavigator() {
   );
 }
 
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const TypesStack = createStackNavigator<TypesParamList>();
 
-function TabOneNavigator() {
+function TypesNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+    <TypesStack.Navigator>
+      <TypesStack.Screen
+        name="Types"
+        component={TypesScreen}
+        options={{ headerTitle: 'Types' }}
       />
-    </TabOneStack.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
-      />
-    </TabTwoStack.Navigator>
+    </TypesStack.Navigator>
   );
 }

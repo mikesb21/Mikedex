@@ -1,22 +1,17 @@
 export type RootStackParamList = {
-  Root: undefined;
+  Mikedex: undefined;
   NotFound: undefined;
 };
 
 export type BottomTabParamList = {
-  PokedexTab: undefined;
-  TabOne: undefined;
-  TabTwo: undefined;
+  Pokedex: undefined;
+  Types: undefined;
 };
 
 export type PokedexParamList = {
-  PokedexScreen: undefined;
-}
-
-export type TabOneParamList = {
-  TabOneScreen: undefined;
+  Pokedex: undefined;
 };
 
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+export type TypesParamList = {
+  Types: undefined;
 };

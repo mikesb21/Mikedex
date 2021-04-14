@@ -1,26 +1,19 @@
-import axios from 'axios';
-import config from '../config';
+import gql from 'graphql-tag';
 
-const pokedexApi = axios.create({
-  baseURL: config.pokedexUrl,
-  headers: {
-    Accept: '*/*',
-    'Content-Type': 'application/json',
-  },
-});
+export const GET_POKEDEX_QUERY = gql`
+  query {
+    pokemon_v2_pokemon(limit: 10) {
+      name
+      id
+    }
+  }
+`;
 
-export const fetchPokedex = () => {
-  return fetch(`${config.pokedexUrl}/pokemon`).then((data) => data.json());
-};
-
-export const fetchSprite = (id: number) => {
-  return fetch(`${config.pokemonImageUrl}${id}.png`);
-};
-
-export const fetchNextPage = (nextPage: string | null | undefined) => {
-  return fetch(`${nextPage}`).then((data) => data.json());
-};
-
-export const fetchPreviousPage = (previousPage: string | null | undefined) => {
-  return fetch(`${previousPage}`).then((data) => data.json());
-};
+export const GET_TYPES_QUERY = gql`
+  query {
+    pokemon_v2_type(limit: 18) {
+      id
+      name
+    }
+  }
+`;
